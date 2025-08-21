@@ -1,0 +1,130 @@
+[
+  {
+    "id": "ds_sales",
+    "name": "sales_orders",
+    "owner": "analytics-team@company.com",
+    "tags": [
+      "pii",
+      "gold"
+    ],
+    "description": "Daily sales orders with customer and product joins.",
+    "columns": [
+      {
+        "name": "order_id",
+        "type": "STRING"
+      },
+      {
+        "name": "customer_id",
+        "type": "STRING"
+      },
+      {
+        "name": "amount",
+        "type": "FLOAT"
+      },
+      {
+        "name": "created_at",
+        "type": "TIMESTAMP"
+      }
+    ],
+    "quality": {
+      "freshness": "ok",
+      "last_loaded": "2025-08-15T10:00:00Z"
+    },
+    "upstream": [
+      "ds_customers",
+      "ds_products"
+    ],
+    "downstream": [
+      "ds_finance_reporting"
+    ]
+  },
+  {
+    "id": "ds_customers",
+    "name": "customers",
+    "owner": "data-eng@company.com",
+    "tags": [
+      "bronze"
+    ],
+    "description": "Raw customers feed from CRM, lightly cleaned.",
+    "columns": [
+      {
+        "name": "customer_id",
+        "type": "STRING"
+      },
+      {
+        "name": "name",
+        "type": "STRING"
+      },
+      {
+        "name": "email",
+        "type": "STRING"
+      }
+    ],
+    "quality": {
+      "freshness": "ok",
+      "last_loaded": "2025-08-15T09:55:00Z"
+    },
+    "upstream": [],
+    "downstream": [
+      "ds_sales"
+    ]
+  },
+  {
+    "id": "ds_products",
+    "name": "products",
+    "owner": "data-eng@company.com",
+    "tags": [
+      "silver"
+    ],
+    "description": "Standardized product dimension table.",
+    "columns": [
+      {
+        "name": "product_id",
+        "type": "STRING"
+      },
+      {
+        "name": "sku",
+        "type": "STRING"
+      },
+      {
+        "name": "price",
+        "type": "FLOAT"
+      }
+    ],
+    "quality": {
+      "freshness": "ok",
+      "last_loaded": "2025-08-15T09:50:00Z"
+    },
+    "upstream": [],
+    "downstream": [
+      "ds_sales"
+    ]
+  },
+  {
+    "id": "ds_finance_reporting",
+    "name": "finance_reporting",
+    "owner": "fpna@company.com",
+    "tags": [
+      "gold"
+    ],
+    "description": "Finance reporting curated layer.",
+    "columns": [
+      {
+        "name": "report_date",
+        "type": "DATE"
+      },
+      {
+        "name": "revenue",
+        "type": "FLOAT"
+      }
+    ],
+    "quality": {
+      "freshness": "late",
+      "last_loaded": "2025-08-10T20:00:00Z"
+    },
+    "upstream": [
+      "ds_sales"
+    ],
+    "downstream": []
+  }
+]
